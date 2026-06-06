@@ -1,0 +1,33 @@
+name: Run Daily AI Market Agent
+
+on:
+  schedule:
+    # CRITICAL TIME CONVERSIONS: GitHub triggers tasks using UTC clock standard.
+    # 3:45 PM IST converts exactly to 10:15 AM UTC time.
+    - cron: '15 10 * * 1-5'
+  workflow_dispatch: # This adds a manual "Run" button inside GitHub to test it anytime!
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project code
+        uses: actions/checkout@v4
+
+      - name: Setup Java Development Kit (JDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Grant execution permission to Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Build and execute Kotlin Agent application
+        env:
+          # Injects your hidden GitHub secrets directly into your Kotlin environment variables
+          GEMINI_API_KEY: ${{ secrets::GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets::TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets::TELEGRAM_CHAT_ID }}
+        run: ./gradlew run

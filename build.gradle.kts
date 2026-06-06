@@ -1,6 +1,8 @@
 plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
+    // 1. ADD THIS: This teaches Gradle how to execute your program
+    application
 }
 
 group = "org.example"
@@ -12,6 +14,11 @@ repositories {
 
 kotlin {
     jvmToolchain(21)
+}
+
+// 2. ADD THIS: This tells the application plugin exactly where your main function lives
+application {
+    mainClass.set("org.example.MainKt")
 }
 
 dependencies {
