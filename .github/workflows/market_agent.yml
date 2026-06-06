@@ -27,7 +27,7 @@ jobs:
       - name: Build and execute Kotlin Agent application
         env:
           # Injects your hidden GitHub secrets directly into your Kotlin environment variables
-          GEMINI_API_KEY: ${{ secrets==GEMINI_API_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets==TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets==TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: ./gradlew run
