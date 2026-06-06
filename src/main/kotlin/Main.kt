@@ -17,10 +17,6 @@ fun main() = runBlocking {
         return@runBlocking
     }
 
-//    val geminiApiKey = "AQ.Ab8RN6I_3rpT6D5Ncvk7tgMVIH4UCn4rTrprjnRr1qEk7hiEsA"
-//    val telegramBotToken = "8676201197:AAGt-MFq0FKACnq7T8LpKx9KDIDNj9jER6o"
-//    val telegramChatId = "665838291"
-
     val geminiApiKey = System.getenv("GEMINI_API_KEY") ?: throw IllegalArgumentException("Missing GEMINI_API_KEY")
     val telegramBotToken = System.getenv("TELEGRAM_BOT_TOKEN") ?: throw IllegalArgumentException("Missing TELEGRAM_BOT_TOKEN")
     val telegramChatId = System.getenv("TELEGRAM_CHAT_ID") ?: throw IllegalArgumentException("Missing TELEGRAM_CHAT_ID")
