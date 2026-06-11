@@ -48,7 +48,7 @@ class GeminiService {
                 ?.jsonPrimitive?.content ?: "Could not extract data."
 
         } catch (e: Exception) {
-            "AI processing failed."
+            "AI processing failed.Error : ${e.message}"
         }
     }
 }
