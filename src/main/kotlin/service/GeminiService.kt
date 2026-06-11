@@ -9,7 +9,7 @@ class GeminiService {
     private val httpClient = HttpClientProvider.client
 
     suspend fun askGeminiAI(marketRawData: String, geminiApiKey: String): String {
-        val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=$geminiApiKey"
+        val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$geminiApiKey"
 
         val requestBody = JsonObject(mapOf(
             "contents" to JsonArray(listOf(JsonObject(mapOf(
