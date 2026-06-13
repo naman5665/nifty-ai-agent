@@ -2,9 +2,12 @@ name: Run Daily AI Market Agent
 
 on:
   schedule:
-    # CRITICAL TIME CONVERSIONS: GitHub triggers tasks using UTC clock standard.
-    # 3:45 PM IST converts exactly to 10:15 AM UTC time.
-    - cron: '15 10 * * 1-5'
+    # GitHub Actions free-tier cron can be delayed 1-3+ hours during peak load.
+    # NSE closes at 3:30 PM IST = 10:00 UTC. We schedule at 8:30 UTC (2:00 PM IST)
+    # so that even with a ~2h GitHub queue delay the job runs after market close.
+    # If GitHub runs it immediately at 8:30 UTC the price will be intraday (not EOD);
+    # with the typical 1-3h delay it lands between 10:30-11:30 UTC = 4-5 PM IST.
+    - cron: '30 8 * * 1-5'
   workflow_dispatch: # This adds a manual "Run" button inside GitHub to test it anytime!
 
 jobs:

@@ -41,14 +41,23 @@ class GeminiService {
                 contentType(ContentType.Application.Json)
                 setBody(requestBody)
             }
-            val jsonResponse = Json.parseToJsonElement(response.bodyAsText()).jsonObject
+            val responseBody = response.bodyAsText()
+            val jsonResponse = Json.parseToJsonElement(responseBody).jsonObject
+
+            // Gemini returns {"error": {...}} on quota/auth failures — surface the real message
+            val apiError = jsonResponse["error"]?.jsonObject
+            if (apiError != null) {
+                val code = apiError["code"]?.jsonPrimitive?.content ?: "unknown"
+                val message = apiError["message"]?.jsonPrimitive?.content ?: "Unknown Gemini API error"
+                return "Gemini API error ($code): $message"
+            }
 
             jsonResponse["candidates"]?.jsonArray?.get(0)?.jsonObject?.get("content")
                 ?.jsonObject?.get("parts")?.jsonArray?.get(0)?.jsonObject?.get("text")
-                ?.jsonPrimitive?.content ?: "Could not extract data."
+                ?.jsonPrimitive?.content ?: "Gemini returned no candidates. Raw response: $responseBody"
 
         } catch (e: Exception) {
-            "AI processing failed.Error : ${e.message}"
+            "AI processing failed. Error: ${e.message}"
         }
     }
 }
